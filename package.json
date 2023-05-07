@@ -1,7 +1,7 @@
 {
   "name": "@pi-agi/core",
   "description": "Core functionalities for Personalized Artificial General Intelligence",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

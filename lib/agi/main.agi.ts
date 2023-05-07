@@ -15,6 +15,7 @@ import { Action, ActionResponse } from '../interface/gpt.interface';
 export class MainAGI<T extends ActionType> {
   protected mainPrompt: string;
   protected nextPrompt: string;
+  protected dirname: string;
   protected taskDir: string;
   protected ltmPath: string;
   protected logPath: string;
@@ -41,31 +42,41 @@ export class MainAGI<T extends ActionType> {
     this.consolidationId = '';
     this.taskDir = '';
     this.logPath = '';
+    this.dirname = '';
   }
 
   /**
    * Initializes the AGI.
    */
   protected initialize(dirname: string, consolidationId: string) {
+    this.consolidationId = consolidationId;
+    this.dirname = dirname;
+
     this.ltmPath = path.join(
-      dirname,
+      this.dirname,
       '..',
       '..',
       'output',
       'memory',
-      consolidationId + '.json'
+      this.consolidationId + '.json'
     );
 
     this.logPath = path.join(
-      dirname,
+      this.dirname,
       '..',
       '..',
       'output',
       'log',
-      consolidationId + '.log'
+      this.consolidationId + '.log'
     );
 
-    this.taskDir = path.join(dirname, '..', '..', 'task', consolidationId);
+    this.taskDir = path.join(
+      this.dirname,
+      '..',
+      '..',
+      'task',
+      this.consolidationId
+    );
   }
 
   /**
@@ -75,6 +86,8 @@ export class MainAGI<T extends ActionType> {
    * @returns A promise that resolves when the action is completed.
    */
   public start = async (content: Content): Promise<any> => {
+    this.initialize(this.dirname, this.consolidationId);
+    
     const loggerUtil = new LoggerUtil(this.consolidationId, this.logPath);
 
     await this.clearFolders(loggerUtil);

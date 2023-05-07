@@ -1,5 +1,6 @@
 # @pi-agi/core Library
-PI AGI: Personalized Artificial General Intelligence
+
+## PI AGI: Personalized Artificial General Intelligence
 
 [![Donate](https://img.shields.io/badge/Donate-Buy%20Me%20a%20Coffee-yellow.svg)](https://www.buymeacoffee.com/RwIpTEd)
 [![Stars](https://img.shields.io/github/stars/fatihturker/PI-AGI.svg?style=flat-square)](https://github.com/fatihturker/PI-AGI/stargazers)

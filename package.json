@@ -1,0 +1,47 @@
+{
+  "name": "@pi-agi/core",
+  "description": "Core functionalities for Personalized Artificial General Intelligence",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "start": "ts-node index.ts",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fatih Turker",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pi-agi/core.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pi-agi/core/issues"
+  },
+  "homepage": "https://github.com/pi-agi/core#readme",
+  "keywords": [
+    "common",
+    "core",
+    "ai",
+    "artificial-intelligence",
+    "agi",
+    "gpt-4",
+    "openai",
+    "microsoft",
+    "personalized-agi",
+    "machine-learning",
+    "deep-learning",
+    "role-based-agi"
+  ],
+  "dependencies": {
+    "axios": "^1.3.4",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.15.7",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}

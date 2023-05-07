@@ -46,9 +46,9 @@ export class MainAGI<T extends ActionType> {
   /**
    * Initializes the AGI.
    */
-  protected initialize() {
+  protected initialize(dirname: string) {
     this.ltmPath = path.join(
-      __dirname,
+      dirname,
       '..',
       '..',
       'output',
@@ -57,7 +57,7 @@ export class MainAGI<T extends ActionType> {
     );
 
     this.logPath = path.join(
-      __dirname,
+      dirname,
       '..',
       '..',
       'output',
@@ -65,13 +65,7 @@ export class MainAGI<T extends ActionType> {
       this.consolidationId + '.log'
     );
 
-    this.taskDir = path.join(
-      __dirname,
-      '..',
-      '..',
-      'task',
-      this.consolidationId
-    );
+    this.taskDir = path.join(dirname, '..', '..', 'task', this.consolidationId);
   }
 
   /**
@@ -81,8 +75,6 @@ export class MainAGI<T extends ActionType> {
    * @returns A promise that resolves when the action is completed.
    */
   public start = async (content: Content): Promise<any> => {
-    this.initialize();
-
     const loggerUtil = new LoggerUtil(this.consolidationId, this.logPath);
 
     await this.clearFolders(loggerUtil);

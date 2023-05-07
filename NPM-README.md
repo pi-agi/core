@@ -86,9 +86,10 @@ export class SeniorBackendSoftwareEngineerAGI extends MainAGI<ActionType> {
   }
 }
 ```
-3. Configure the environment parameters as mentioned in the [Repository Overview](#wrench-repository-overview) section.
-4. Create .env file and set your environment configuration, and other necessary configurations.
-5. Define input and start the AGI
+3. Implement actions and action types needed regarding AGIs capacity. Do not forget to use your own ActionTypes here `MainAGI<ActionType>` which will be extended from ActionType.
+4. Configure the environment parameters as mentioned in the [Repository Overview](#wrench-repository-overview) section.
+5. Create .env file and set your environment configuration, and other necessary configurations.
+6. Define input and start the AGI
 ```javascript
 async function createContent(documentation: string): Promise<Content> {
   const environmentUtil = new EnvironmentUtil();
@@ -150,8 +151,8 @@ async function backend() {
   await agi.start(content);
 }
 ```
-6. Once you've set up everything, run `npm start` to kick off the AGI.
-7. You can find example project here: [Senior Software Engineer AGI](https://github.com/pi-agi/senior-software-engineer)
+7. Once you've set up everything, run `npm start` to kick off the AGI.
+8. You can find example project here: [Senior Software Engineer AGI](https://github.com/pi-agi/senior-software-engineer)
 
 ## :wrench: Repository Overview
 

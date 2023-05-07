@@ -37,14 +37,18 @@ Follow these steps to start exploring the world of PI AGI:
 ```javascript
 import { v4 as uuidv4 } from 'uuid';
 import * as path from 'path';
-import { MainAGI, OpenAIAzureProvider } from '@pi-agi/core';
+import { ActionType, MainAGI, OpenAIAzureProvider } from '@pi-agi/core';
 
 /**
  * A class representing a Senior Backend Software Engineer AGI.
  */
-export class SeniorBackendSoftwareEngineerAGI extends MainAGI {
-  constructor(openAIProvider: OpenAIAzureProvider) {
-    super(openAIProvider);
+export class SeniorBackendSoftwareEngineerAGI extends MainAGI<ActionType> {
+  constructor(
+    openAIProvider: OpenAIAzureProvider,
+    maxRetryCount: number,
+    maxRetryInterval: number
+  ) {
+    super(openAIProvider, maxRetryCount, maxRetryInterval);
   }
 
   /**
@@ -54,7 +58,7 @@ export class SeniorBackendSoftwareEngineerAGI extends MainAGI {
     this.consolidationId = uuidv4();
     super.consolidationId = this.consolidationId;
 
-    super.initialize();
+    super.initialize(__dirname);
 
     this.mainPrompt = await this.fileUtil.readFileContent(
       path.join(
@@ -104,7 +108,7 @@ async function createContent(documentation: string): Promise<Content> {
   } as Content;
 }
 
-function createProvider(): OpenAIAzureProvider {
+function createProvider(): any {
   const apiKey = process.env.API_KEY as string;
   const apiEndpoint = process.env.API_ENDPOINT as string;
   const apiVersion = process.env.API_VERSION as string;
@@ -112,7 +116,7 @@ function createProvider(): OpenAIAzureProvider {
   const maxRetryCount = Number.parseInt(process.env.MAX_RETRY_COUNT as string);
   const retryInterval = Number.parseInt(process.env.RETRY_INTERVAL as string);
 
-  return new OpenAIAzureProvider(
+  const provider = new OpenAIAzureProvider(
     apiKey,
     apiEndpoint,
     apiVersion,
@@ -120,10 +124,12 @@ function createProvider(): OpenAIAzureProvider {
     maxRetryCount,
     retryInterval
   );
+
+  return { provider, maxRetryCount, retryInterval };
 }
 
 async function backend() {
-  const input = await new FileUtil().readFileContent(
+  const documentation = await new FileUtil().readFileContent(
     path.join(
       __dirname,
       'asset',
@@ -132,9 +138,13 @@ async function backend() {
     )
   );
 
-  const content = await createContent(input);
-  const gptProvider = createProvider();
-  const agi = new SeniorBackendSoftwareEngineerAGI(gptProvider);
+  const content = await createContent(documentation);
+  const { gptProvider, maxRetryCount, maxRetryInterval } = createProvider();
+  const agi = new SeniorBackendSoftwareEngineerAGI(
+    gptProvider,
+    maxRetryCount,
+    maxRetryInterval
+  );
 
   agi.init();
   await agi.start(content);

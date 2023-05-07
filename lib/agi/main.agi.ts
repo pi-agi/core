@@ -46,14 +46,14 @@ export class MainAGI<T extends ActionType> {
   /**
    * Initializes the AGI.
    */
-  protected initialize(dirname: string) {
+  protected initialize(dirname: string, consolidationId: string) {
     this.ltmPath = path.join(
       dirname,
       '..',
       '..',
       'output',
       'memory',
-      this.consolidationId + '.json'
+      consolidationId + '.json'
     );
 
     this.logPath = path.join(
@@ -62,10 +62,10 @@ export class MainAGI<T extends ActionType> {
       '..',
       'output',
       'log',
-      this.consolidationId + '.log'
+      consolidationId + '.log'
     );
 
-    this.taskDir = path.join(dirname, '..', '..', 'task', this.consolidationId);
+    this.taskDir = path.join(dirname, '..', '..', 'task', consolidationId);
   }
 
   /**

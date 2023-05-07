@@ -58,7 +58,7 @@ export class SeniorBackendSoftwareEngineerAGI extends MainAGI<ActionType> {
     this.consolidationId = uuidv4();
     super.consolidationId = this.consolidationId;
 
-    super.initialize(__dirname);
+    super.initialize(__dirname, this.consolidationId);
 
     this.mainPrompt = await this.fileUtil.readFileContent(
       path.join(

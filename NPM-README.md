@@ -140,9 +140,9 @@ async function backend() {
   );
 
   const content = await createContent(documentation);
-  const { gptProvider, maxRetryCount, maxRetryInterval } = createProvider();
+  const { provider, maxRetryCount, maxRetryInterval } = createProvider();
   const agi = new SeniorBackendSoftwareEngineerAGI(
-    gptProvider,
+    provider,
     maxRetryCount,
     maxRetryInterval
   );

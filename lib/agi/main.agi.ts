@@ -4,10 +4,10 @@ import * as path from 'path';
 import { Content } from '../interface/content.interface';
 import { LoggerUtil } from '../util/logger.util';
 import { MemoryUtil } from '../util/memory.util';
-import { ActionUtil } from '../util/action.util';
 import { StorageUtil } from '../util/storage.util';
 import { ActionType } from '../enum/action-type.enum';
 import { Action, ActionResponse } from '../interface/gpt.interface';
+import { Actionable } from '../interface/actionable.interface';
 
 /**
  * A base class for AGI (Artificial General Intelligence).
@@ -33,7 +33,8 @@ export class MainAGI<T extends ActionType> {
   constructor(
     protected openAIProvider: OpenAIAzureProvider,
     protected maxRetryCount: number,
-    protected maxRetryInterval: number
+    protected maxRetryInterval: number,
+    protected actionUtil: Actionable<T>
   ) {
     this.fileUtil = new FileUtil();
     this.mainPrompt = '';
@@ -87,7 +88,7 @@ export class MainAGI<T extends ActionType> {
    */
   public start = async (content: Content): Promise<any> => {
     this.initialize(this.dirname, this.consolidationId);
-    
+
     const loggerUtil = new LoggerUtil(this.consolidationId, this.logPath);
 
     await this.clearFolders(loggerUtil);
@@ -100,8 +101,6 @@ export class MainAGI<T extends ActionType> {
 
     const memoryUtil = new MemoryUtil(this.fileUtil, this.ltmPath);
     memoryUtil.resetLTM();
-
-    const actionUtil = new ActionUtil(loggerUtil, this.taskDir, this.ltmPath);
 
     const storageUtil = new StorageUtil();
 
@@ -143,7 +142,7 @@ export class MainAGI<T extends ActionType> {
         },
       } as Action<T>;
 
-      const actRes = await actionUtil.takeAction(action);
+      const actRes = await this.actionUtil.takeAction(action);
       estimation = parsed.neededStepCount;
       if (actRes !== 'y') {
         return;
@@ -179,7 +178,7 @@ export class MainAGI<T extends ActionType> {
       ) {
         for (const a of parsed.actions) {
           const actionResponse = { action: a } as ActionResponse<T>;
-          actionResponse.response = await actionUtil.takeAction(a);
+          actionResponse.response = await this.actionUtil.takeAction(a);
           actionResponses.push(actionResponse);
         }
       }
@@ -204,7 +203,7 @@ export class MainAGI<T extends ActionType> {
           },
         } as Action<T>;
 
-        const actRes = await actionUtil.takeAction(action);
+        const actRes = await this.actionUtil.takeAction(action);
         if (actRes !== 'y') {
           return false;
         }

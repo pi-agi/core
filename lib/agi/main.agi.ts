@@ -20,7 +20,7 @@ export class MainAGI<T extends ActionType> {
   protected ltmPath: string;
   protected logPath: string;
   protected consolidationId: string;
-
+  protected actionUtil: Actionable<T>;
   protected fileUtil: FileUtil;
 
   /**
@@ -34,9 +34,9 @@ export class MainAGI<T extends ActionType> {
     protected openAIProvider: OpenAIAzureProvider,
     protected maxRetryCount: number,
     protected maxRetryInterval: number,
-    protected actionUtil: Actionable<T>
   ) {
     this.fileUtil = new FileUtil();
+    this.actionUtil = {} as Actionable<T>;
     this.mainPrompt = '';
     this.nextPrompt = '';
     this.ltmPath = '';

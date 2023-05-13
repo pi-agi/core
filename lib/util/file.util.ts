@@ -46,6 +46,29 @@ export class FileUtil {
   };
 
   /**
+   * Writes buffer to a file.
+   *
+   * @param filePath - The path to the file.
+   * @param buffer - The buffer content to be written.
+   * @returns A promise that resolves when the file is written.
+   */
+  writeFileWithBuffer = async (
+    filePath: string,
+    buffer: Buffer
+  ): Promise<void> => {
+    await this.createFolder(path.dirname(filePath));
+    return new Promise<void>((resolve, reject) => {
+      fs.writeFile(filePath, buffer, (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  };
+
+  /**
    * Appends content to a file. If the file does not exist, it will be created.
    *
    * @param filePath - The path to the file.

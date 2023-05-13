@@ -22,6 +22,7 @@ export class MainAGI<T extends ActionType> {
   protected consolidationId: string;
   protected actionUtil: Actionable<T>;
   protected fileUtil: FileUtil;
+  protected loggerUtil: LoggerUtil;
 
   /**
    * Creates a new MainAGI object.
@@ -33,9 +34,10 @@ export class MainAGI<T extends ActionType> {
   constructor(
     protected openAIProvider: OpenAIAzureProvider,
     protected maxRetryCount: number,
-    protected maxRetryInterval: number,
+    protected maxRetryInterval: number
   ) {
     this.fileUtil = new FileUtil();
+    this.loggerUtil = {} as LoggerUtil;
     this.actionUtil = {} as Actionable<T>;
     this.mainPrompt = '';
     this.nextPrompt = '';
@@ -78,6 +80,8 @@ export class MainAGI<T extends ActionType> {
       'task',
       this.consolidationId
     );
+
+    this.loggerUtil = new LoggerUtil(this.consolidationId, this.logPath);
   }
 
   /**
@@ -89,15 +93,13 @@ export class MainAGI<T extends ActionType> {
   public start = async (content: Content): Promise<any> => {
     this.initialize(this.dirname, this.consolidationId);
 
-    const loggerUtil = new LoggerUtil(this.consolidationId, this.logPath);
-
-    await this.clearFolders(loggerUtil);
+    await this.clearFolders(this.loggerUtil);
 
     await this.fileUtil.createFolder(this.taskDir);
 
-    loggerUtil.log('Action started at ' + new Date().toISOString());
+    this.loggerUtil.log('Action started at ' + new Date().toISOString());
 
-    this.openAIProvider.initialize(loggerUtil);
+    this.openAIProvider.initialize(this.loggerUtil);
 
     const memoryUtil = new MemoryUtil(this.fileUtil, this.ltmPath);
     memoryUtil.resetLTM();
@@ -124,7 +126,7 @@ export class MainAGI<T extends ActionType> {
     );
     let parsed = await this.processGpt4ApiResponse(
       res as string,
-      loggerUtil,
+      this.loggerUtil,
       0
     );
     memoryUtil.writeLTM(parsed);
@@ -165,7 +167,7 @@ export class MainAGI<T extends ActionType> {
 
       const stepName = 'Step ' + attemptCount.toString() + ': ' + parsed.step;
 
-      loggerUtil.log(stepName);
+      this.loggerUtil.log(stepName);
 
       storageUtil.addStep(parsed.step);
 
@@ -217,11 +219,11 @@ export class MainAGI<T extends ActionType> {
 
         parsed = await this.processGpt4ApiResponse(
           res as string,
-          loggerUtil,
+          this.loggerUtil,
           0
         );
       } catch (e) {
-        loggerUtil.error('Error while generating completion: ', e);
+        this.loggerUtil.error('Error while generating completion: ', e);
       }
 
       memoryUtil.writeLTM(parsed);
@@ -230,10 +232,10 @@ export class MainAGI<T extends ActionType> {
     }
 
     if (content.maxAttempt <= attemptCount) {
-      loggerUtil.log('Reached out to maximum attempt.');
+      this.loggerUtil.log('Reached out to maximum attempt.');
     }
 
-    loggerUtil.log('Action ended at ' + new Date().toISOString());
+    this.loggerUtil.log('Action ended at ' + new Date().toISOString());
   };
 
   /**

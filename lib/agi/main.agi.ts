@@ -8,6 +8,7 @@ import { StorageUtil } from '../util/storage.util';
 import { ActionType } from '../enum/action-type.enum';
 import { Action, ActionResponse } from '../interface/gpt.interface';
 import { Actionable } from '../interface/actionable.interface';
+import { ActionUtil } from '../util/action.util';
 
 /**
  * A base class for AGI (Artificial General Intelligence).
@@ -134,7 +135,7 @@ export class MainAGI<T extends ActionType> {
 
     this.loggerUtil.log('Initial response is captured. Processing..');
 
-    memoryUtil.writeLTM(parsed);
+    await memoryUtil.writeLTM(parsed);
 
     this.loggerUtil.log('Initial response is written to LTM.');
 
@@ -151,7 +152,13 @@ export class MainAGI<T extends ActionType> {
         },
       } as Action<T>;
 
-      const actRes = await this.actionUtil.takeAction(action);
+      const actionUtilLegacy = new ActionUtil(
+        this.loggerUtil,
+        this.taskDir,
+        this.ltmPath
+      );
+
+      const actRes = await actionUtilLegacy.takeAction(action);
       estimation = parsed.neededStepCount;
       if (actRes !== 'y') {
         return;
@@ -237,7 +244,7 @@ export class MainAGI<T extends ActionType> {
         this.loggerUtil.error('Error while generating completion: ', e);
       }
 
-      memoryUtil.writeLTM(parsed);
+      await memoryUtil.writeLTM(parsed);
 
       this.loggerUtil.log('Response is written to LTM.');
 

@@ -179,7 +179,7 @@ export class MainAGI<T extends ActionType> {
 
     while (!parsed.completed && content.maxAttempt >= attemptCount) {
       // 20 seconds delay between each request to avoid exceeding rate limit
-      this.delay(20000);
+      await this.delay(20000);
 
       const stepName = 'Step ' + attemptCount.toString() + ': ' + parsed.step;
 

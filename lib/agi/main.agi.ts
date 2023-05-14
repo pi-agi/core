@@ -103,7 +103,7 @@ export class MainAGI<T extends ActionType> {
     this.openAIProvider.initialize(this.loggerUtil);
 
     const memoryUtil = new MemoryUtil(this.fileUtil, this.ltmPath);
-    memoryUtil.resetLTM();
+    await memoryUtil.resetLTM();
 
     const storageUtil = new StorageUtil();
 

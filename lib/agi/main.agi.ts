@@ -196,7 +196,9 @@ export class MainAGI<T extends ActionType> {
       ) {
         for (const a of parsed.actions) {
           const actionResponse = { action: a } as ActionResponse<T>;
+          this.loggerUtil.log('Taking action: ', a);
           actionResponse.response = await this.actionUtil.takeAction(a);
+          this.loggerUtil.log('Action response: ', actionResponse.response);
           actionResponses.push(actionResponse);
         }
       }

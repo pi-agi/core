@@ -120,6 +120,8 @@ export class MainAGI<T extends ActionType> {
 
     mainPrompt = mainPrompt.replace('{{MAX_TOKEN}}', max_tokens.toString());
 
+    this.loggerUtil.log('Initialized AGI.');
+
     let res = await this.openAIProvider.generateCompletion(
       mainPrompt,
       max_tokens
@@ -129,7 +131,12 @@ export class MainAGI<T extends ActionType> {
       this.loggerUtil,
       0
     );
+
+    this.loggerUtil.log('Initial response is captured. Processing..');
+
     memoryUtil.writeLTM(parsed);
+
+    this.loggerUtil.log('Initial response is written to LTM.');
 
     let estimation = 0;
 
@@ -149,6 +156,8 @@ export class MainAGI<T extends ActionType> {
       if (actRes !== 'y') {
         return;
       }
+    } else {
+      this.loggerUtil.log('Estimation is not provided by AGI.');
     }
 
     const steps: string[] = parsed.steps;
@@ -217,6 +226,8 @@ export class MainAGI<T extends ActionType> {
           max_tokens
         );
 
+        this.loggerUtil.log('Response is captured. Processing..');
+
         parsed = await this.processGpt4ApiResponse(
           res as string,
           this.loggerUtil,
@@ -227,6 +238,8 @@ export class MainAGI<T extends ActionType> {
       }
 
       memoryUtil.writeLTM(parsed);
+
+      this.loggerUtil.log('Response is written to LTM.');
 
       attemptCount++;
     }

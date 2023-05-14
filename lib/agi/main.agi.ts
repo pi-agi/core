@@ -178,9 +178,6 @@ export class MainAGI<T extends ActionType> {
     let iteration = 0;
 
     while (!parsed.completed && content.maxAttempt >= attemptCount) {
-      // 20 seconds delay between each request to avoid exceeding rate limit
-      await this.delay(20000);
-
       const stepName = 'Step ' + attemptCount.toString() + ': ' + parsed.step;
 
       this.loggerUtil.log(stepName);
@@ -228,6 +225,10 @@ export class MainAGI<T extends ActionType> {
           return false;
         }
       }
+
+      // 20 seconds delay between each request to avoid exceeding rate limit
+      this.loggerUtil.log('Waiting 20 seconds to do not exceed rate limit.');
+      await this.delay(20000);
 
       try {
         res = await this.openAIProvider.generateCompletion(

@@ -70,7 +70,7 @@ export class LoggerUtil {
       this.consolidationId +
       ': ' +
       message +
-      '. ' +
+      ' ' +
       (data ? JSON.stringify(data) : '')
     );
   };

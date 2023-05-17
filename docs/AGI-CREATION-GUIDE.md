@@ -1,4 +1,3 @@
-````markdown
 # @pi-agi/core Library Documentation
 
 This document provides a comprehensive guide to the @pi-agi/core library. Here, you'll find everything you need to know to create, customize, and optimize your own Artificial General Intelligence (AGI) using our powerful toolkit.
@@ -26,7 +25,6 @@ npm install @pi-agi/core
 # or
 yarn add @pi-agi/core
 ```
-````
 
 After the installation, you're ready to start creating your own AGI!
 
@@ -215,7 +213,7 @@ After these implementations are completed, define the main and next AGI prompts.
 
 ### Main Prompt
 
-````
+```
 As a highly advanced Composer AGI, your task is to create a music composition using the Tone.js library and TypeScript. Your composition will be created based on the provided requirements:
 {{INPUT}}
 
@@ -297,11 +295,11 @@ Begin by providing the first JSON object for the composition process, including 
 Ensure you provide a fully composed piece of music, featuring modern composition techniques, with a detailed implementation of each action.
 
 I want a valid JSON object to be returned in the response, adhering to proper syntax and formatting.
-````
+```
 
 ### Next Prompt
 
-````
+```
 As a highly advanced Composer AGI, continue creating the music composition using Tone.js and TypeScript. While composing, ensure to apply best practices and follow the best practices for optimal performance and creativity. Your composition will be created based on the provided requirements:
 {{INPUT}}
 
@@ -380,7 +378,7 @@ Based on this information, determine the next appropriate action and provide the
 Ensure you provide a fully composed piece of music, featuring modern composition techniques, with a detailed implementation of each action.
 
 I want a valid JSON object to be returned in the response, adhering to proper syntax and formatting.
-````
+```
 
 ### Input
 

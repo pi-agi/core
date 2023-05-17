@@ -1,6 +1,6 @@
 {
   "name": "@pi-agi/core",
-  "description": "Core functionalities for Personalized Artificial General Intelligence",
+  "description": "The very first AGI library has core functionalities to help you to generate your Personalized Artificial General Intelligence.",
   "version": "1.0.17",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,7 +31,11 @@
     "personalized-agi",
     "machine-learning",
     "deep-learning",
-    "role-based-agi"
+    "role-based-agi",
+    "first agi",
+    "pi agi",
+    "pi",
+    "pi-agi"
   ],
   "dependencies": {
     "axios": "^1.3.4",

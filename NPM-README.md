@@ -29,4 +29,4 @@ npm install @pi-agi/core
 yarn add @pi-agi/core
 ```
 
-Once the library is installed, you can start defining your AGI's actions and behaviors. For more information on how to do this, please refer to our [documentation](https://github.com/pi-agi/core/docs/DOCUMENTATION.md).
+Once the library is installed, you can start defining your AGI's actions and behaviors. For more information on how to do this, please refer to our [documentation](https://github.com/pi-agi/core/blob/master/docs/DOCUMENTATION.md).

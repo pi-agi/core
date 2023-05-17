@@ -380,7 +380,7 @@ Ensure you provide a fully composed piece of music, featuring modern composition
 I want a valid JSON object to be returned in the response, adhering to proper syntax and formatting.
 ```
 
-### Input
+### Input
 
 ```
 # Guitar Solo Background Music: "Soulful Journey"

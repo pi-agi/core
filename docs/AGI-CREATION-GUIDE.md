@@ -32,65 +32,7 @@ After the installation, you're ready to start creating your own AGI!
 
 Actions are the building blocks of your AGI. Each action corresponds to a specific task or function that your AGI can perform. To create an action, you'll need to define it using the `Actionable` interface.
 
-Here's a basic example:
-
-### Actions
-
-```javascript
-import { ActionType } from '@pi-agi/core';
-
-export enum ComposeActionType {
-  ADD_INSTRUMENT = 'addInstrument',
-  ADD_NOTE = 'addNote',
-  EXPORT_MIDI = 'exportMIDI',
-}
-
-export type MergedActionType = ActionType & ComposeActionType;
-```
-
-### Action Util
-
-```javascript
-import { Action, Actionable, LoggerUtil } from '@pi-agi/core';
-import {
-  ComposeActionType,
-  MergedActionType,
-} from '../enum/compose-action-type.enum';
-import { ComposeUtil } from './compose.util';
-
-export class ComposeActionUtil implements Actionable<MergedActionType> {
-  private composeUtil: ComposeUtil;
-
-  constructor(private taskDir: string, private loggerUtil: LoggerUtil) {
-    this.composeUtil = new ComposeUtil(this.taskDir, this.loggerUtil);
-  }
-
-  async takeAction(action: Action<MergedActionType>): Promise<any> {
-    try {
-      switch (action.type) {
-        case ComposeActionType.ADD_INSTRUMENT:
-          this.composeUtil.addInstrument(action.input.name);
-          break;
-        case ComposeActionType.ADD_NOTE:
-          this.composeUtil.addNote(
-            action.input.instrumentName,
-            action.input.note,
-            action.input.duration
-          );
-          break;
-        case ComposeActionType.EXPORT_WAV:
-          return await this.composeUtil.exportMIDI(action.input.name);
-        default:
-          throw new Error('Invalid action type');
-      }
-    } catch (e) {
-      return e;
-    }
-  }
-}
-```
-
-For more detailed information about defining actions, check out our [Action Guide](LINK_TO_ACTION_GUIDE).
+For more detailed information about defining actions, check out our [Action Guide](ACTION-GUIDE.md).
 
 ## Creating AGI
 
@@ -243,10 +185,8 @@ Ensure a JSON object is returned in the response, adhering to proper syntax and 
 Here you can find the Action Types; you should use string values in the 'type' field like 'addInstrument':
 ComposeActionType {
 ADD_INSTRUMENT = 'addInstrument',
-SET_TEMPO = 'setTempo',
 ADD_NOTE = 'addNote',
-ADD_EFFECT = 'addEffect',
-EXPORT_WAV = 'exportWav',
+EXPORT_MIDI = 'exportMIDI',
 }
 
 Input is different for each action.
@@ -259,14 +199,6 @@ For 'addInstrument', the input will include the name of the instrument and optio
 "input": {
 "name": "Instrument Name",
 "synthOptions": "Optional Tone.PolySynthOptions"
-}
-}
-
-For 'setTempo', the input will include the beats per minute (bpm) value. Here is an example payload for 'setTempo':
-{
-"type": "setTempo",
-"input": {
-"bpm": "Beats per Minute"
 }
 }
 
@@ -325,10 +257,8 @@ Ensure a JSON object is returned in the response, adhering to proper syntax and 
 Here you can find the ComposeActionTypes; you should use string values in the 'type' field like 'addInstrument':
 ComposeActionType {
 ADD_INSTRUMENT = 'addInstrument',
-SET_TEMPO = 'setTempo',
 ADD_NOTE = 'addNote',
-ADD_EFFECT = 'addEffect',
-EXPORT_WAV = 'exportWav',
+EXPORT_MIDI = 'exportMIDI',
 }
 
 Input is different for each action.

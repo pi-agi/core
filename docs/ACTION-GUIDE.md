@@ -29,7 +29,7 @@ import { ActionType } from '@pi-agi/core';
 export enum ComposeActionType {
   ADD_INSTRUMENT = 'addInstrument',
   ADD_NOTE = 'addNote',
-  EXPORT_WAV = 'exportWav',
+  EXPORT_MIDI = 'exportMIDI',
 }
 
 export type MergedActionType = ActionType & ComposeActionType;
@@ -71,7 +71,7 @@ export class ComposeActionUtil implements Actionable<MergedActionType> {
             action.input.duration
           );
           break;
-        case ComposeActionType.EXPORT_WAV:
+        case ComposeActionType.EXPORT_MIDI:
           return await this.composeUtil.exportMIDI(action.input.name);
         default:
           throw new Error('Invalid action type');

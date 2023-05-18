@@ -1,5 +1,7 @@
-[![Donate](https://img.shields.io/badge/Donate-Buy%20Me%20a%20Coffee-yellow.svg)](https://www.buymeacoffee.com/RwIpTEd)
-[![Stars](https://img.shields.io/github/stars/pi-agi/core.svg?style=flat-square)](https://github.com/pi-agi/core/stargazers)
+[![Donate](https://img.shields.io/badge/Donate-Buy%20Me%20a%20Coffee-yellow.svg?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/RwIpTEd)
+[![Version](https://img.shields.io/npm/v/@pi-agi/core?color=CB3837&style=for-the-badge&logo=npm)](https://www.npmjs.com/package/@pi-agi/core)
+[![Downloads](https://img.shields.io/npm/dt/@pi-agi/core?color=CB3837&logo=npm&style=for-the-badge)](https://www.npmjs.com/package/@pi-agi/core)
+[![License](https://img.shields.io/github/license/pi-agi/core?color=43b043&style=for-the-badge&logo=github)](LICENSE)
 
 # Welcome to @pi-agi/core Library
 

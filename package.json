@@ -44,9 +44,9 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   },
-  "git repository": "https://github.com/pi-agi/core/common",
+  "git repository": "https://github.com/pi-agi/core",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pi-agi/core/common.git"
+    "url": "https://github.com/pi-agi/core.git"
   }
 }

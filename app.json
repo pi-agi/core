@@ -1,5 +1,5 @@
 {
-  "name": "pi-agi-core",
+  "name": "@pi-agi/core",
   "version": "1.0.0",
   "description": "The very first AGI library has core functionalities to help you to generate your Personalized Artificial General Intelligence.",
   "keywords": [

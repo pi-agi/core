@@ -76,6 +76,10 @@ export class OpenAIAzureProvider {
     return this.MAX_TOKEN_COUNT - this.countTokens(prompt) - 10;
   };
 
+  getDefaultMaxToken = () => {
+    return this.MAX_TOKEN_COUNT;
+  };
+
   /**
    * Sends a completion request to OpenAI API.
    *

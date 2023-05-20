@@ -261,7 +261,7 @@ export class MainAGI<T extends ActionType> {
           max_tokens
         );
 
-        currentToken += this.openAIProvider.countTokens(nextPrompt);
+        currentToken += this.openAIProvider.getDefaultMaxToken();
 
         this.loggerUtil.log('Response is captured. Processing..');
 

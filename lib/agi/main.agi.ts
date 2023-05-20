@@ -244,7 +244,7 @@ export class MainAGI<T extends ActionType> {
 
       if (this.isOneMinuteExceeded(startDate, now)) {
         currentToken = 0;
-      } else {
+      } else if (TPM <= currentToken) {
         const delayInterval = now.getTime() - startDate.getTime();
         const delaySeconds = delayInterval / 1000;
 

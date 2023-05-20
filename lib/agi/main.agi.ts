@@ -85,6 +85,13 @@ export class MainAGI<T extends ActionType> {
     this.loggerUtil = new LoggerUtil(this.consolidationId, this.logPath);
   }
 
+  public isOneMinuteExceeded(previousDate: Date, currentDate: Date): boolean {
+    const timeDifference = currentDate.getTime() - previousDate.getTime();
+    const oneMinuteInMillis = 60 * 1000; // One minute in milliseconds
+
+    return timeDifference > oneMinuteInMillis;
+  }
+
   /**
    * Starts an AGI (Artificial General Intelligence) action by initializing necessary components,
    * clearing previous folders, and generating prompts for user input based on previous responses.
@@ -98,9 +105,13 @@ export class MainAGI<T extends ActionType> {
 
     await this.fileUtil.createFolder(this.taskDir);
 
-    this.loggerUtil.log('Action started at ' + new Date().toISOString());
+    let startDate = new Date();
+
+    this.loggerUtil.log('Action started at ' + startDate.toISOString());
 
     this.openAIProvider.initialize(this.loggerUtil);
+
+    const TPM = 60000;
 
     const memoryUtil = new MemoryUtil(this.fileUtil, this.ltmPath);
     await memoryUtil.resetLTM();
@@ -177,6 +188,8 @@ export class MainAGI<T extends ActionType> {
 
     let iteration = 0;
 
+    let currentToken = 0;
+
     while (!parsed.completed && content.maxAttempt >= attemptCount) {
       const stepName = 'Step ' + attemptCount.toString() + ': ' + parsed.step;
 
@@ -226,15 +239,29 @@ export class MainAGI<T extends ActionType> {
         }
       }
 
-      // 20 seconds delay between each request to avoid exceeding rate limit
-      this.loggerUtil.log('Waiting 20 seconds to do not exceed rate limit.');
-      await this.delay(20000);
+      // Rate Limit Fix
+      const now = new Date();
+
+      if (this.isOneMinuteExceeded(startDate, now)) {
+        currentToken = 0;
+      } else if (TPM <= currentToken) {
+        const delayInterval = now.getTime() - startDate.getTime();
+        const delaySeconds = delayInterval / 1000;
+
+        this.loggerUtil.log(
+          `Waiting ${delaySeconds} seconds to avoid exceeding the rate limit.`
+        );
+        await this.delay(delayInterval);
+        startDate = new Date();
+      }
 
       try {
         res = await this.openAIProvider.generateCompletion(
           nextPrompt,
           max_tokens
         );
+
+        currentToken += this.openAIProvider.getDefaultMaxToken();
 
         this.loggerUtil.log('Response is captured. Processing..');
 

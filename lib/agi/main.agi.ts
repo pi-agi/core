@@ -191,27 +191,9 @@ export class MainAGI<T extends ActionType> {
     let currentToken = 0;
 
     while (!parsed.completed && content.maxAttempt >= attemptCount) {
-      const stepName = 'Step ' + attemptCount.toString() + ': ' + parsed.step;
-
-      this.loggerUtil.log(stepName);
+      const actionResponses = await this.processActions(parsed, attemptCount);
 
       storageUtil.addStep(parsed.step);
-
-      let actionResponses: ActionResponse<T>[] = [];
-
-      if (
-        parsed.actions &&
-        Array.isArray(parsed.actions) &&
-        parsed.actions.length > 0
-      ) {
-        for (const a of parsed.actions) {
-          const actionResponse = { action: a } as ActionResponse<T>;
-          this.loggerUtil.log('Taking action: ', a);
-          actionResponse.response = await this.actionUtil.takeAction(a);
-          this.loggerUtil.log('Action response: ', actionResponse.response);
-          actionResponses.push(actionResponse);
-        }
-      }
 
       const lastSteps = storageUtil.getLastSteps();
 
@@ -281,11 +263,41 @@ export class MainAGI<T extends ActionType> {
       attemptCount++;
     }
 
+    // Processing last action
+    await this.processActions(parsed, attemptCount);
+
     if (content.maxAttempt <= attemptCount) {
       this.loggerUtil.log('Reached out to maximum attempt.');
     }
 
     this.loggerUtil.log('Action ended at ' + new Date().toISOString());
+  };
+
+  processActions = async (
+    parsed: any,
+    attemptCount: number
+  ): Promise<ActionResponse<T>[]> => {
+    const stepName = 'Step ' + attemptCount.toString() + ': ' + parsed.step;
+
+    this.loggerUtil.log(stepName);
+
+    let actionResponses: ActionResponse<T>[] = [];
+
+    if (
+      parsed.actions &&
+      Array.isArray(parsed.actions) &&
+      parsed.actions.length > 0
+    ) {
+      for (const a of parsed.actions) {
+        const actionResponse = { action: a } as ActionResponse<T>;
+        this.loggerUtil.log('Taking action: ', a);
+        actionResponse.response = await this.actionUtil.takeAction(a);
+        this.loggerUtil.log('Action response: ', actionResponse.response);
+        actionResponses.push(actionResponse);
+      }
+    }
+
+    return actionResponses;
   };
 
   /**

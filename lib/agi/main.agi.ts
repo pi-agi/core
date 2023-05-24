@@ -222,21 +222,15 @@ export class MainAGI<T extends ActionType> {
       }
 
       // Rate Limit Fix
-      const now = new Date();
-
-      if (this.isOneMinuteExceeded(startDate, now)) {
-        currentToken = 0;
-      }
-
       if (TPM <= currentToken) {
-        const delayInterval = now.getTime() - startDate.getTime();
+        const delayInterval = 60000;
         const delaySeconds = delayInterval / 1000;
 
         this.loggerUtil.log(
           `Waiting ${delaySeconds} seconds to avoid exceeding the rate limit.`
         );
         await this.delay(delayInterval);
-        startDate = new Date();
+        currentToken = 0;
       }
 
       try {

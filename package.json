@@ -1,7 +1,7 @@
 {
   "name": "@pi-agi/core",
   "description": "The very first AGI library has core functionalities to help you to generate your Personalized Artificial General Intelligence.",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

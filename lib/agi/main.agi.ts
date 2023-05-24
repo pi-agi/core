@@ -188,7 +188,7 @@ export class MainAGI<T extends ActionType> {
 
     let iteration = 0;
 
-    let currentToken = 0;
+    let currentToken = this.openAIProvider.getDefaultMaxToken();
 
     while (!parsed.completed && content.maxAttempt >= attemptCount) {
       const actionResponses = await this.processActions(parsed, attemptCount);
@@ -226,7 +226,9 @@ export class MainAGI<T extends ActionType> {
 
       if (this.isOneMinuteExceeded(startDate, now)) {
         currentToken = 0;
-      } else if (TPM <= currentToken) {
+      }
+
+      if (TPM <= currentToken) {
         const delayInterval = now.getTime() - startDate.getTime();
         const delaySeconds = delayInterval / 1000;
 
